@@ -22,11 +22,6 @@ jobs:
     - name: Run tests
       run: |
         pytest --alluredir=reports/
-    - name: Upload Allure report
-      uses: allure-framework/allure-action@v1.0.0  # Usa esta versión estable
-      with:
-        allure-results: reports/
-    - name: Debug Information
+    - name: Generate Allure Report
       run: |
-        echo "Printing debug information"
-        ls -la  # Muestra el contenido del directorio
+        allure generate reports/ --clean
