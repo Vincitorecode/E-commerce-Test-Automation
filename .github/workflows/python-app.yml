@@ -12,22 +12,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: '3.9'
-
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-
     - name: Run tests
       run: |
         pytest --alluredir=reports/
-
     - name: Upload Allure report
-      uses: AllureFramework/allure-action@v3
+      uses: Allure Framework/allure-action@v2  # Cambiar a @v2
       with:
         allure-results: reports/
