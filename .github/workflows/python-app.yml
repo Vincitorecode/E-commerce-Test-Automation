@@ -24,6 +24,6 @@ jobs:
       run: |
         pytest --alluredir=reports/
     - name: Upload Allure report
-      uses: Allure Framework/allure-action@v2  # Cambiar a @v2
+      uses: allure-framework/allure-action@master   # Cambiar a @v2
       with:
         allure-results: reports/
