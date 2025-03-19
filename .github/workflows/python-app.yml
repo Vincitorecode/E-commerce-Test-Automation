@@ -9,7 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
@@ -24,6 +23,10 @@ jobs:
       run: |
         pytest --alluredir=reports/
     - name: Upload Allure report
-      uses: allure-framework/allure-action@master   # Cambiar a @v2
+      uses: allure-framework/allure-action@v1.0.0  # Usa esta versión estable
       with:
         allure-results: reports/
+    - name: Debug Information
+      run: |
+        echo "Printing debug information"
+        ls -la  # Muestra el contenido del directorio
