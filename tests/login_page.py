@@ -1,16 +1,25 @@
-from selenium.webdriver.common.by import By
+from selenium import webdriver
+from config import Config
+from pages.login_page import LoginPage
+import pytest
 
-class LoginPage:
-    def __init__(self, driver):
-        self.driver = driver
-        self.username_field = (By.ID, "username")
-        self.password_field = (By.ID, "password")
-        self.login_button = (By.ID, "login_button")
+# Test de Login
+def test_login():
+    # Crear una instancia del WebDriver desde la configuración
+    driver = Config.get_driver()
 
-    def login(self, username, password):
-        self.driver.find_element(*self.username_field).send_keys(username)
-        self.driver.find_element(*self.password_field).send_keys(password)
-        self.driver.find_element(*self.login_button).click()
+    # Abrir la página de login (utilizamos la URL de Sauce Demo para este ejemplo)
+    driver.get(Config.BASE_URL)  # Esto tomará la URL que hayas configurado en config.py
 
-    def is_login_successful(self):
-        return "Bienvenido" in self.driver.page_source
+    # Crear una instancia de la página de login
+    login_page = LoginPage(driver)
+
+    # Realizar el login con usuario y contraseña de prueba
+    login_page.login("standard_user", "secret_sauce")  # Usamos un usuario y contraseña válidos
+
+    # Verificar que la página cargó correctamente después de iniciar sesión
+    assert login_page.is_login_successful(), "El login falló o no se redirige correctamente después de iniciar sesión."
+
+    # Cerrar el navegador después de la prueba
+    driver.quit()
+
