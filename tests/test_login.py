@@ -1,30 +1,22 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
+import pytest
+from selenium.common.exceptions import NoSuchElementException
 from config import Config
+from pages.login_page import LoginPage
 
-def test_login():
+@pytest.fixture
+def driver():
     driver = Config.get_driver()
-    driver.get("https://www.saucedemo.com/")  # URL de la página de prueba
-    print("Página de login abierta")
-
-    # Encontrar los campos de usuario y contraseña
-    username_input = driver.find_element(By.ID, "user-name")
-    password_input = driver.find_element(By.ID, "password")
-    login_button = driver.find_element(By.ID, "login-button")
-
-    # Ingresar usuario y contraseña válidos
-    username_input.send_keys("standard_user")
-    password_input.send_keys("secret_sauce")
-    login_button.click()
-
-    # Verificar si el login fue exitoso (se debe ver el logo de Sauce Labs)
-    try:
-        driver.find_element(By.CLASS_NAME, "app_logo")
-        print("Login exitoso")
-    except:
-        print("Login fallido")
-
+    yield driver
     driver.quit()
 
-if __name__ == "__main__":
-    test_login()
+def test_login(driver):
+    login_page = LoginPage(driver)
+    login_page.load()
+    login_page.login("standard_user", "secret_sauce")
+
+    # Validar que el login fue exitoso
+    try:
+        assert login_page.is_logged_in(), "No se encontró el logo, login fallido"
+    except NoSuchElementException:
+        pytest.fail("Login fallido: Elemento no encontrado")
+
